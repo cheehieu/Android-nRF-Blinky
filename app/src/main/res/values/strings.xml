@@ -29,7 +29,7 @@
   -->
 
 <resources>
-    <string name="app_name">nRF Blinky</string>
+    <string name="app_name">EllieGrid MVP</string>
     <string name="feature_name">BLINKY</string>
     <string name="unknown_device">Unknown Device</string>
 

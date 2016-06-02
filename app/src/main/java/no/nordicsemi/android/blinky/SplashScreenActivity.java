@@ -39,7 +39,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
 public class SplashScreenActivity extends Activity {
-	private static final int DURATION = 1000;
+	private static final int DURATION = 3000;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
