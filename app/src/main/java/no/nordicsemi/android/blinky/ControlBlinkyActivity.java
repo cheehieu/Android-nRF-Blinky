@@ -115,7 +115,9 @@ public class ControlBlinkyActivity extends AppCompatActivity {
 			public void onClick(View v) {
 				if (mBlinkyDevice != null && mBlinkyDevice.isConnected()) {
 					if (mActionOnOff.getText().equals(getString(R.string.turn_on))) {
-						mBlinkyDevice.send(true);
+//						mBlinkyDevice.send(true);
+						int comp_led_data = 0x03333321;
+						mBlinkyDevice.sendInt(comp_led_data);
 					} else {
 						mBlinkyDevice.send(false);
 					}

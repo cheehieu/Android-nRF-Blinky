@@ -48,6 +48,10 @@ public class BlinkyService extends BleProfileService implements BlinkyManagerCal
 			mManager.send(mLEDState = onOff);
 		}
 
+		public void sendInt(final int data) {
+			mManager.sendInt(data);
+		}
+
 		public boolean isOn() {
 			return mLEDState;
 		}

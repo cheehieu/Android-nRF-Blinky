@@ -41,7 +41,9 @@ public class BlinkyManager extends BleManager<BlinkyManagerCallbacks> {
 	/** LED characteristic UUID */
 	private final static UUID LBS_UUID_LED_CHAR = UUID.fromString("00001525-1212-efde-1523-785feabcd123");
 
-	private BluetoothGattCharacteristic mButtonCharacteristic, mLedCharacteristic;
+	private final static UUID LBS_UUID_COMP_LED_CHAR = UUID.fromString("00001526-1212-efde-1523-785feabcd123");
+
+	private BluetoothGattCharacteristic mButtonCharacteristic, mLedCharacteristic, mCompLedCharacteristic;
 
 	public BlinkyManager(final Context context) {
 		super(context);
@@ -70,6 +72,7 @@ public class BlinkyManager extends BleManager<BlinkyManagerCallbacks> {
 			if (service != null) {
 				mButtonCharacteristic = service.getCharacteristic(LBS_UUID_BUTTON_CHAR);
 				mLedCharacteristic = service.getCharacteristic(LBS_UUID_LED_CHAR);
+				mCompLedCharacteristic = service.getCharacteristic(LBS_UUID_COMP_LED_CHAR);
 			}
 
 			boolean writeRequest = false;
@@ -78,13 +81,19 @@ public class BlinkyManager extends BleManager<BlinkyManagerCallbacks> {
 				writeRequest = (rxProperties & BluetoothGattCharacteristic.PROPERTY_WRITE) > 0;
 			}
 
-			return mButtonCharacteristic != null && mLedCharacteristic != null && writeRequest;
+			if (mCompLedCharacteristic != null) {
+				final int rxProperties = mCompLedCharacteristic.getProperties();
+				writeRequest = (rxProperties & BluetoothGattCharacteristic.PROPERTY_WRITE) > 0;
+			}
+
+			return mButtonCharacteristic != null && mLedCharacteristic != null && mCompLedCharacteristic != null && writeRequest;
 		}
 
 		@Override
 		protected void onDeviceDisconnected() {
 			mButtonCharacteristic = null;
 			mLedCharacteristic = null;
+			mCompLedCharacteristic = null;
 		}
 
 		@Override
@@ -112,5 +121,20 @@ public class BlinkyManager extends BleManager<BlinkyManagerCallbacks> {
 		}
 		mLedCharacteristic.setValue(command);
 		writeCharacteristic(mLedCharacteristic);
+	}
+
+	public void sendInt(final int data) {
+		// Are we connected?
+		if (mCompLedCharacteristic == null)
+			return;
+
+//		byte [] command;
+//		if (onOff){
+//			command = new byte [] {1};
+//		} else {
+//			command = new byte [] {0};
+//		}
+		mCompLedCharacteristic.setValue(data, BluetoothGattCharacteristic.FORMAT_UINT32, 0);
+		writeCharacteristic(mCompLedCharacteristic);
 	}
 }
