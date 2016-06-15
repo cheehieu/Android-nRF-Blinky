@@ -128,12 +128,6 @@ public class BlinkyManager extends BleManager<BlinkyManagerCallbacks> {
 		if (mCompLedCharacteristic == null)
 			return;
 
-//		byte [] command;
-//		if (onOff){
-//			command = new byte [] {1};
-//		} else {
-//			command = new byte [] {0};
-//		}
 		mCompLedCharacteristic.setValue(data, BluetoothGattCharacteristic.FORMAT_UINT32, 0);
 		writeCharacteristic(mCompLedCharacteristic);
 	}

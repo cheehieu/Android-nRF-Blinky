@@ -43,17 +43,22 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+
+import java.math.BigInteger;
 
 import no.nordicsemi.android.blinky.profile.BleProfileService;
 import no.nordicsemi.android.blinky.service.BlinkyService;
 
 public class ControlBlinkyActivity extends AppCompatActivity {
 	private BlinkyService.BlinkyBinder mBlinkyDevice;
-	private Button mActionOnOff, mActionConnect;
+	private Button mActionOnOff, mActionConnect, mActionCompLEDs;
+	private EditText mCompLEDsData;
 	private ImageView mImageBulb;
 	private View mParentView;
 	private View mBackgroundView;
@@ -109,6 +114,8 @@ public class ControlBlinkyActivity extends AppCompatActivity {
 		mImageBulb = (ImageView) findViewById(R.id.img_bulb);
 		mBackgroundView = findViewById(R.id.background_view);
 		mParentView = findViewById(R.id.relative_layout_control);
+//		mCompLEDsData = (EditText) findViewById(R.id.input_comp_leds);
+//		mActionCompLEDs = (Button) findViewById(R.id.action_comp_leds);
 
 		mActionOnOff.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -116,7 +123,7 @@ public class ControlBlinkyActivity extends AppCompatActivity {
 				if (mBlinkyDevice != null && mBlinkyDevice.isConnected()) {
 					if (mActionOnOff.getText().equals(getString(R.string.turn_on))) {
 //						mBlinkyDevice.send(true);
-						int comp_led_data = 0x03333321;
+						int comp_led_data = 0x02030010;
 						mBlinkyDevice.sendInt(comp_led_data);
 					} else {
 						mBlinkyDevice.send(false);
@@ -145,6 +152,20 @@ public class ControlBlinkyActivity extends AppCompatActivity {
 				}
 			}
 		});
+
+//		mActionCompLEDs.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				if (mBlinkyDevice != null && mBlinkyDevice.isConnected()) {
+//					//read edittext and write int
+//					String comp_led_data_str = mCompLEDsData.getText().toString();
+//					if(TextUtils.isEmpty(comp_led_data_str)) {
+//						int comp_led_data = Integer.parseInt(comp_led_data_str, 16);	//0x03333321;
+//						mBlinkyDevice.sendInt(comp_led_data);
+//					}
+//				}
+//			}
+//		});
 	}
 
 	@Override
